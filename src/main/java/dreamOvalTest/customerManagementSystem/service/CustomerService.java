@@ -16,22 +16,19 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
 
-    @Autowired
-    ResponseEntity responseEntity;
-
     public ResponseEntity<List<Customer>> getAllCustomers() {
         List<Customer> customers = customerRepository.findAll();
-        return  responseEntity.ok(customers);
+        return  ResponseEntity.ok(customers);
     }
 
     public ResponseEntity<Customer> addCustomer(Customer customer) {
         Customer addcustomer = customerRepository.save(customer);
-        return responseEntity.ok(addcustomer);
+        return ResponseEntity.ok(addcustomer);
     }
 
     public ResponseEntity<Customer> findCustomerById(Integer id) {
-        Customer customer = customerRepository.findById(id).get();
-        return responseEntity.ok(customer);
+        Customer customer = customerRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Customer does not exit"));
+        return ResponseEntity.ok(customer);
     }
 
     public ResponseEntity<Map<String, Boolean>> deleteCustomer(Integer id){
@@ -39,7 +36,7 @@ public class CustomerService {
         customerRepository.deleteById(id);
         Map<String, Boolean> deleteEmployee = new HashMap<String, Boolean>();
         deleteEmployee.put("Customer deleted Successfully", Boolean.TRUE);
-        return responseEntity.ok(deleteEmployee);
+        return ResponseEntity.ok(deleteEmployee);
     }
 
     public ResponseEntity<Customer> editCustomer(Integer id, Customer customer){
@@ -52,6 +49,6 @@ public class CustomerService {
         findCustomer.setEmail(customer.getEmail());
 
         Customer updatedCustomer = customerRepository.save(findCustomer);
-        return responseEntity.ok(updatedCustomer);
+        return ResponseEntity.ok(updatedCustomer);
     }
 }
