@@ -41,4 +41,17 @@ public class CustomerService {
         deleteEmployee.put("Customer deleted Successfully", Boolean.TRUE);
         return responseEntity.ok(deleteEmployee);
     }
+
+    public ResponseEntity<Customer> editCustomer(Integer id, Customer customer){
+        Customer findCustomer = customerRepository
+                .findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Customer does not exit"));
+
+        findCustomer.setFirstName(customer.getFirstName());
+        findCustomer.setLastName(customer.getLastName());
+        findCustomer.setEmail(customer.getEmail());
+
+        Customer updatedCustomer = customerRepository.save(findCustomer);
+        return responseEntity.ok(updatedCustomer);
+    }
 }

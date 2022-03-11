@@ -33,4 +33,9 @@ public class CustomerController {
     public ResponseEntity<Map<String, Boolean>> deleteCustomer(@PathVariable("id") Integer id){
         return customerService.deleteCustomer(id);
     }
+
+    @PutMapping("/customer/{id}")
+    public ResponseEntity<Customer> editCustomer(@PathVariable("id") Integer id, @RequestBody Customer customer){
+        return customerService.editCustomer(id, customer);
+    }
 }
